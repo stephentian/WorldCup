@@ -57,6 +57,11 @@ const root = path.resolve(process.argv[2] || '.')
 console.log('Static root dir: ', root)
 
 const server = http.createServer(function (req, res) {
+    if (path.normalize(decodeURI(req.url)) !== decodeURI(req.url)) {
+        res.writeHead(403);
+        res.end();
+        return;
+    }
   // 获取 url 的 path, 类似 '/css/asset.css'
   const pathname = url.parse(req.url).pathname
   // 获取对应的本地文件路径， 类似 'srv/www/css/asset.css'
